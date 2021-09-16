@@ -92,14 +92,14 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailMovie(
-                        original_title: original_title,
-                        original_language: original_language,
+                        originalTitle: original_title,
+                        originalLanguage: original_language,
                         overview: overview,
                         popularity: popularity,
-                        poster_path: poster_path,
-                        release_date: release_date,
-                        vote_average: vote_average,
-                        vote_count: vote_count,
+                        posterPath: poster_path,
+                        releaseDate: release_date,
+                        voteAverage: vote_average,
+                        voteCount: vote_count,
                       ),
                     ),
                   );

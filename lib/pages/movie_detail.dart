@@ -1,22 +1,24 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 class DetailMovie extends StatelessWidget {
-  final String original_title,
-      original_language,
+  final String originalTitle,
+      originalLanguage,
       overview,
-      poster_path,
-      release_date;
-  final dynamic vote_average, popularity, vote_count;
+      posterPath,
+      releaseDate;
+  final dynamic voteAverage, popularity, voteCount;
 
   const DetailMovie({
-    required this.original_title,
-    required this.original_language,
+    required this.originalTitle,
+    required this.originalLanguage,
     required this.overview,
     required this.popularity,
-    required this.poster_path,
-    required this.release_date,
-    required this.vote_average,
-    required this.vote_count,
+    required this.posterPath,
+    required this.releaseDate,
+    required this.voteAverage,
+    required this.voteCount,
   });
 
   @override
@@ -35,7 +37,7 @@ class DetailMovie extends StatelessWidget {
                 child: Row(
                   children: [
                     Image.network(
-                      'https://image.tmdb.org/t/p/w500$poster_path',
+                      'https://image.tmdb.org/t/p/w500$posterPath',
                     ),
                     Expanded(
                       child: Padding(
@@ -45,7 +47,7 @@ class DetailMovie extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              original_title,
+                              originalTitle,
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -58,7 +60,7 @@ class DetailMovie extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Vote count: $vote_count",
+                              "Vote count: $voteCount",
                               style: const TextStyle(
                                 fontSize: 16,
                               ),
@@ -75,7 +77,7 @@ class DetailMovie extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "$vote_average",
+                                  "$voteAverage",
                                   style: const TextStyle(
                                     fontSize: 18,
                                   ),
