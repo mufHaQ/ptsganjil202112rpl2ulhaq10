@@ -121,8 +121,8 @@ class DetailMovie extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Detail Movie"),
         elevation: 0,
+        title: const Text('Movie Detail'),
       ),
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints boxConstraints) {
@@ -181,18 +181,27 @@ class DetailMovie extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Material(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(thumbBorderRadius),
+            ),
             elevation: 3,
             child: Container(
-              decoration: const BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: Colors.blue,
-                    width: 5,
-                  ),
+              padding: const EdgeInsets.all(5),
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(thumbBorderRadius),
+                  bottom: Radius.circular(thumbBorderRadius),
+                ),
+                child: loadImage(
+                  backdropPath,
                 ),
               ),
-              child: loadImage(
-                backdropPath,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(thumbBorderRadius),
+                ),
               ),
             ),
           ),

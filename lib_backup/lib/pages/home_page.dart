@@ -4,14 +4,12 @@ import "dart:math";
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
 import 'package:ptsganjil202112rpl2ulhaq10/custom_function/debug_print.dart';
 import 'package:ptsganjil202112rpl2ulhaq10/pages/movie_detail.dart';
-import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,8 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
     apiKey = dotenv.get('API_KEY');
+
     resultId = getRandomElement(listForRandom);
 
     fetchMovies(
@@ -58,8 +56,6 @@ class _HomePageState extends State<HomePage> {
     fetchGenre(
       "https://api.themoviedb.org/3/genre/movie/list?api_key=$apiKey&language=en-US",
     );
-
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   }
 
   T getRandomElement<T>(List<T> list) {
@@ -176,66 +172,92 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget createCard(int index) {
-    return Card(
-      elevation: 3,
-      margin: const EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 20,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       child: InkWell(
+        borderRadius: BorderRadius.circular(10),
         onTap: () {
           openDetailMovie(index);
         },
-        child: Column(
-          children: [
-            ClipRRect(
-              child: loadImage(index, 'backdrop_path'),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        child: Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: SizedBox(
+              height: 120,
+              child: Row(
                 children: [
-                  Text(
-                    movies[index]['title'],
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: loadImage(index, 'poster_path'),
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 5,
-                    ),
-                    child: Text(
-                      movies[index]['release_date'] ?? "Unknown",
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.only(
+                        left: 10,
+                        top: 5,
+                        bottom: 5,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            movies[index]['original_title'],
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              movies[index]['release_date'] ?? "Unknown",
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    WidgetSpan(
+                                      child: Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  left: 5,
+                                ),
+                                child: Text(
+                                  "${movies[index]['vote_average']}",
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                  ),
-                  Text(
-                    movies[index]['overview'] ?? "Unknown",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  )
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -263,38 +285,30 @@ class _HomePageState extends State<HomePage> {
       );
     }
     return Scaffold(
-      body: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            SliverAppBar(
-              floating: true,
-              title: InkWell(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                  ),
-                  child: Text(
-                    name,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                onTap: () => EasyLoading.showToast(
-                  name,
-                  toastPosition: EasyLoadingToastPosition.bottom,
-                  duration: const Duration(
-                    seconds: 5,
-                  ),
-                ),
+      appBar: AppBar(
+        title: InkWell(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+            ),
+            child: Text(
+              name,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ];
-        },
-        body: createListView(),
+          ),
+          onTap: () => EasyLoading.showToast(
+            name,
+            toastPosition: EasyLoadingToastPosition.bottom,
+            duration: const Duration(
+              seconds: 5,
+            ),
+          ),
+        ),
       ),
+      body: createListView(),
     );
   }
 }
